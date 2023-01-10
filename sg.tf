@@ -1,3 +1,11 @@
+variable "allowed_ip" {
+  default = "0.0.0.0/0"
+}
+
+variable "sg_tag" {
+  default = "allow_all"
+}
+
 resource "aws_security_group" "worldbank" {
   description = "A SG with relaxed permissions. Everyone is allowed to peek in"
 
@@ -5,7 +13,7 @@ resource "aws_security_group" "worldbank" {
     from_port        = 0
     to_port          = 0
     protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
+    cidr_blocks      = [var.allowed_ip]
     ipv6_cidr_blocks = ["::/0"]
   }
 
@@ -18,6 +26,6 @@ resource "aws_security_group" "worldbank" {
   }
 
   tags = {
-    Name = "allow_all"
+    Name = var.sg_tag
   }
 }
